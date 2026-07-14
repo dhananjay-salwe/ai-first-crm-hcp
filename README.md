@@ -346,7 +346,7 @@ http://127.0.0.1:8000/docs
 
 # 👨‍💻 Author
 
-**Dhananjay Madan Salwe**
+**Dhananjay Salwe**
 
 **Full Stack Developer**
 
