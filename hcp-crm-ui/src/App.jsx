@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios';
+import { MessageCircle, Send } from 'lucide-react';
 import { addChatMessage, updateEntireForm } from './redux/interactionSlice';
 import InteractionForm from './InteractionForm';
 
@@ -8,7 +9,7 @@ function App() {
   const dispatch = useDispatch();
   const formData = useSelector((state) => state.interaction.formData);
   const chatMessages = useSelector((state) => state.interaction.chatMessages);
-  
+
   const [chatInput, setChatInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
@@ -33,11 +34,18 @@ function App() {
       const cleanData = Object.fromEntries(
         Object.entries(extractedData).filter(([_, v]) => v != null)
       );
-      
+
       dispatch(updateEntireForm(cleanData));
 
-      // 4. Add AI reply to chat
-      dispatch(addChatMessage({ role: 'ai', text: response.data.reply }));
+      // 4. Add AI reply to chat - but if the DB write failed, say so.
+      // response.data.reply is always the happy-path text, it has no idea
+      // whether tool_log_interaction actually succeeded.
+      const dbResult = response.data.database;
+      const replyText = dbResult && dbResult.status === 'error'
+        ? `${response.data.reply} (Heads up though - saving this to the database failed: ${dbResult.message})`
+        : response.data.reply;
+
+      dispatch(addChatMessage({ role: 'ai', text: replyText }));
 
     } catch (error) {
       console.error("Error communicating with AI:", error);
@@ -51,46 +59,52 @@ function App() {
     <div className="app-container">
       {/* LEFT COLUMN: The Structured Form */}
       <div className="form-section">
-        <h2>Log HCP Interaction</h2>
+        <h2 className="page-title">Log HCP Interaction</h2>
         <InteractionForm />
       </div>
 
       {/* RIGHT COLUMN: The AI Chat Assistant */}
       <div className="chat-section">
-        <h3 style={{ borderBottom: '1px solid #eee', paddingBottom: '10px', marginBottom: '10px' }}>
-          🌐 AI Assistant
-        </h3>
-        
-        <div style={{ flex: 1, overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+        <div className="chat-header">
+          <div className="chat-header-icon">
+            <MessageCircle size={15} />
+          </div>
+          <div className="chat-header-titles">
+            <h3>AI Assistant</h3>
+            <span>Log interaction via chat</span>
+          </div>
+        </div>
+
+        <div className="chat-messages">
+          {chatMessages.length === 0 && (
+            <div className="chat-bubble ai">
+              Log interaction details here (e.g., "Met Dr. Smith, discussed
+              Product X efficacy, positive sentiment, shared brochure") or ask
+              for help.
+            </div>
+          )}
           {chatMessages.map((msg, idx) => (
-            <div key={idx} style={{
-              alignSelf: msg.role === 'user' ? 'flex-end' : 'flex-start',
-              backgroundColor: msg.role === 'user' ? '#007bff' : '#f1f1f1',
-              color: msg.role === 'user' ? 'white' : 'black',
-              padding: '10px',
-              borderRadius: '8px',
-              maxWidth: '80%'
-            }}>
+            <div key={idx} className={`chat-bubble ${msg.role === 'user' ? 'user' : 'ai'}`}>
               {msg.text}
             </div>
           ))}
-          {isLoading && <div style={{ alignSelf: 'flex-start', color: 'gray' }}>AI is thinking...</div>}
+          {isLoading && <div className="chat-thinking">AI is thinking...</div>}
         </div>
 
-        <div style={{ display: 'flex', gap: '10px', marginTop: '15px' }}>
-          <input 
-            type="text" 
+        <div className="chat-input-row">
+          <input
+            type="text"
             value={chatInput}
             onChange={(e) => setChatInput(e.target.value)}
             onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
             placeholder="Describe interaction..."
-            style={{ flex: 1, padding: '10px', borderRadius: '4px', border: '1px solid #ccc' }}
           />
-          <button 
+          <button
+            className="btn-send"
             onClick={handleSendMessage}
             disabled={isLoading}
-            style={{ padding: '10px 20px', background: '#6c757d', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
           >
+            <Send size={14} />
             Log
           </button>
         </div>

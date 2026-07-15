@@ -71,6 +71,7 @@ AI Tools
 - LangGraph
 - Groq API
 - Pydantic
+- SQLAlchemy + MySQL (via PyMySQL)
 
 ---
 
@@ -170,11 +171,11 @@ AI-First-CRM/
 │
 ├── ai-backend/
 │   ├── main.py
+│   ├── agent.py
+│   ├── schema.py
+│   ├── database.py
 │   ├── requirements.txt
 │   ├── .env
-│   ├── agents/
-│   ├── tools/
-│   ├── models/
 │   └── ...
 │
 ├── hcp-crm-ui/
@@ -196,6 +197,10 @@ The project consists of two applications:
 - Frontend (React)
 
 Run both simultaneously using separate terminal windows.
+
+## Before you start
+
+The backend needs a running **MySQL** server it can reach. `database.py` connects and creates the `interactions` table the moment the app starts up, so if MySQL isn't running yet (or the connection details are wrong), the backend will fail immediately on launch rather than later when you first use it. Have MySQL up and a database created before running `python main.py`.
 
 ---
 
@@ -237,11 +242,14 @@ pip install -r requirements.txt
 
 ## Configure Environment Variables
 
-Create a `.env` file inside the backend directory.
+Create a `.env` file inside the backend directory with **both** of the following — the app raises an error on startup if either is missing.
 
 ```env
 GROQ_API_KEY=your_api_key_here
+DATABASE_URL=mysql+pymysql://user:password@localhost:3306/your_db_name
 ```
+
+`DATABASE_URL` follows SQLAlchemy's connection string format. Make sure the database (`your_db_name` above) already exists on your MySQL server — SQLAlchemy will create the `interactions` table for you, but not the database itself.
 
 ---
 
@@ -355,4 +363,3 @@ http://127.0.0.1:8000/docs
 # 📄 License
 
 This project is intended for demonstration and educational purposes.
-```

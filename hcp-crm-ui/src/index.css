@@ -6,10 +6,23 @@
   padding: 0;
 }
 
+:root {
+  --color-bg: #f4f6f8;
+  --color-card: #ffffff;
+  --color-border: #e5e7eb;
+  --color-text: #1f2937;
+  --color-text-muted: #6b7280;
+  --color-primary: #2f6fed;
+  --color-primary-light: #eaf1ff;
+  --color-positive: #f5a623;
+  --color-neutral: #2f6fed;
+  --color-negative: #e5484d;
+}
+
 body {
   font-family: 'Inter', sans-serif; /* Mandatory requirement */
-  background-color: #f4f6f8;
-  color: #333;
+  background-color: var(--color-bg);
+  color: var(--color-text);
 }
 
 .app-container {
@@ -21,22 +34,387 @@ body {
   margin: 0 auto;
 }
 
-/* We will use these for our two columns */
+/* Two main columns */
 .form-section {
   flex: 2;
-  background: white;
-  padding: 20px;
-  border-radius: 8px;
+  background: var(--color-card);
+  padding: 24px;
+  border-radius: 10px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.05);
   overflow-y: auto;
 }
 
 .chat-section {
   flex: 1;
-  background: white;
+  background: var(--color-card);
   padding: 20px;
-  border-radius: 8px;
+  border-radius: 10px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.05);
   display: flex;
   flex-direction: column;
+  min-width: 300px;
+}
+
+.page-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--color-text);
+  margin-bottom: 20px;
+}
+
+/* ---- Form ---- */
+.form-card-header {
+  font-size: 15px;
+  font-weight: 600;
+  border-bottom: 1px solid var(--color-border);
+  padding-bottom: 12px;
+  margin-bottom: 4px;
+}
+
+.field-row {
+  display: flex;
+  gap: 16px;
+}
+
+.field-group {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.field-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-text-muted);
+}
+
+.field-input,
+.field-select,
+.field-textarea {
+  width: 100%;
+  padding: 9px 10px;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  font-size: 14px;
+  font-family: inherit;
+  color: var(--color-text);
+  background: #fff;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.field-input:focus,
+.field-select:focus,
+.field-textarea:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px var(--color-primary-light);
+}
+
+.field-textarea {
+  resize: vertical;
+  min-height: 70px;
+}
+
+.field-with-icon {
+  position: relative;
+}
+
+.field-with-icon .field-input {
+  padding-left: 34px;
+}
+
+.field-with-icon svg {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--color-text-muted);
+  pointer-events: none;
+}
+
+.textarea-wrapper {
+  position: relative;
+}
+
+.textarea-icon-btn {
+  position: absolute;
+  right: 8px;
+  bottom: 8px;
+  background: transparent;
+  border: none;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  display: flex;
+  padding: 4px;
+  border-radius: 4px;
+}
+
+.textarea-icon-btn:hover {
+  background: var(--color-bg);
+  color: var(--color-primary);
+}
+
+/* Voice note button */
+.btn-voice {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  align-self: flex-start;
+  background: #fff;
+  border: 1px solid var(--color-border);
+  color: var(--color-text-muted);
+  font-size: 12.5px;
+  font-weight: 500;
+  padding: 7px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.btn-voice:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+/* Section subheader (Materials & Samples) */
+.section-subheader {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--color-text);
+  margin-top: 4px;
+}
+
+.asset-box {
+  background: #f9fafb;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.asset-box-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.asset-empty-text {
+  font-size: 13px;
+  color: var(--color-text-muted);
+  font-style: italic;
+}
+
+.btn-outline-sm {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #fff;
+  border: 1px solid var(--color-border);
+  color: var(--color-text);
+  font-size: 12.5px;
+  font-weight: 500;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.btn-outline-sm:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+/* Sentiment */
+.sentiment-group {
+  display: flex;
+  gap: 12px;
+  margin-top: 6px;
+  flex-wrap: wrap;
+}
+
+.sentiment-option {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13.5px;
+  font-weight: 500;
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--color-border);
+  cursor: pointer;
+  color: var(--color-text-muted);
+  background: #fff;
+}
+
+.sentiment-option input {
+  accent-color: currentColor;
+}
+
+.sentiment-option.positive.selected {
+  border-color: var(--color-positive);
+  color: var(--color-positive);
+  background: #fff7ea;
+}
+
+.sentiment-option.neutral.selected {
+  border-color: var(--color-neutral);
+  color: var(--color-neutral);
+  background: var(--color-primary-light);
+}
+
+.sentiment-option.negative.selected {
+  border-color: var(--color-negative);
+  color: var(--color-negative);
+  background: #fdecec;
+}
+
+/* AI suggested follow-ups */
+.ai-followups-box {
+  background: var(--color-primary-light);
+  border: 1px solid #cfe0ff;
+  border-radius: 6px;
+  padding: 10px 12px;
+}
+
+.ai-followups-box .field-label {
+  color: var(--color-primary);
+}
+
+.ai-followups-box ul {
+  padding-left: 18px;
+  margin-top: 6px;
+  font-size: 13px;
+  color: var(--color-primary);
+}
+
+/* ---- Chat / AI Assistant ---- */
+.chat-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-bottom: 1px solid var(--color-border);
+  padding-bottom: 14px;
+  margin-bottom: 12px;
+}
+
+.chat-header-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--color-primary);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.chat-header-titles h3 {
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.chat-header-titles span {
+  font-size: 12px;
+  color: var(--color-text-muted);
+}
+
+.chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.chat-bubble {
+  padding: 10px 12px;
+  border-radius: 10px;
+  max-width: 85%;
+  font-size: 13.5px;
+  line-height: 1.45;
+}
+
+.chat-bubble.user {
+  align-self: flex-end;
+  background: var(--color-primary);
+  color: #fff;
+  border-bottom-right-radius: 2px;
+}
+
+.chat-bubble.ai {
+  align-self: flex-start;
+  background: #f1f3f5;
+  color: var(--color-text);
+  border-bottom-left-radius: 2px;
+}
+
+.chat-thinking {
+  align-self: flex-start;
+  color: var(--color-text-muted);
+  font-size: 13px;
+  font-style: italic;
+}
+
+.chat-input-row {
+  display: flex;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.chat-input-row input {
+  flex: 1;
+  padding: 10px 12px;
+  border-radius: 6px;
+  border: 1px solid var(--color-border);
+  font-size: 14px;
+  font-family: inherit;
+}
+
+.chat-input-row input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px var(--color-primary-light);
+}
+
+.btn-send {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 16px;
+  background: var(--color-primary);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 13.5px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn-send:disabled {
+  background: #9db6ef;
+  cursor: not-allowed;
+}
+
+/* Responsive Design for smaller screens */
+@media (max-width: 900px) {
+  .app-container {
+    flex-direction: column;
+    height: auto;
+  }
+
+  .form-section, .chat-section {
+    width: 100%;
+    flex: none;
+  }
+
+  .chat-section {
+    min-height: 500px;
+  }
+
+  .field-row {
+    flex-direction: column;
+  }
 }
