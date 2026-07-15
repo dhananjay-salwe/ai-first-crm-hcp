@@ -360,11 +360,3 @@ http://127.0.0.1:8000/docs
 
 ---
 
-# 📄 License
-
-<<<<<<< HEAD
-This project is intended for demonstration and educational purposes.
-=======
-This project is intended for demonstration and educational purposes.
-```
->>>>>>> d4bc45eb31b9acbe25567557a05fcc4d75bd1e1b
